@@ -261,6 +261,18 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
 </style>
 </head>
 <body class="container">
+  <div id="layar-pembuka" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:'Poppins', sans-serif; cursor:pointer; transition: opacity 1s ease;">
+        <span style="font-size: 2rem; margin-bottom: 15px; animation: pulse 1.5s infinite;">💌</span>
+        <span style="font-size: 1.2rem; text-align:center;">Sentuh layarnya pelan-pelan ya...</span>
+    </div>
+    
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
     <!-- Background Music -->
     <audio id="bgMusic" loop preload="auto">
     <source src="musik.mp3" type="audio/mpeg">
@@ -618,21 +630,32 @@ function startHearts() {
 </script>
 
 <script>
-  // Trik pancingan khusus biar iPhone gak bisu
   window.addEventListener('load', () => {
     const music = document.getElementById('bgMusic');
+    const layarPembuka = document.getElementById('layar-pembuka');
     music.volume = 0.5;
     
-    const playAudio = () => {
-      music.play().catch(e => console.log(e));
-      // Matiin sensor sentuhnya abis lagu nyala biar HP gak lag
-      document.removeEventListener('click', playAudio);
-      document.removeEventListener('touchstart', playAudio);
+    // Fungsi ini bakal jalan pas layar disentuh
+    const mulaiSemua = () => {
+      // 1. Lagu langsung digas!
+      music.play().catch(e => console.log("Audio error:", e));
+      
+      // 2. Layar pembuka pelan-pelan menghilang
+      layarPembuka.style.opacity = '0';
+      
+      // 3. Setelah 1 detik (pas layarnya udah hilang), hapus dari sistem biar ga berat
+      setTimeout(() => {
+          layarPembuka.style.display = 'none';
+      }, 1000);
+
+      // Matiin sensor sentuh biar HP ga lag
+      layarPembuka.removeEventListener('click', mulaiSemua);
+      layarPembuka.removeEventListener('touchstart', mulaiSemua);
     };
 
-    // Lagu bakal nyala otomatis pas cewek lu sentuh layarnya
-    document.addEventListener('click', playAudio);
-    document.addEventListener('touchstart', playAudio);
+    // Nunggu cewek lu nyentuh layar pembukanya
+    layarPembuka.addEventListener('click', mulaiSemua);
+    layarPembuka.addEventListener('touchstart', mulaiSemua);
   });
 </script>
 </body>
