@@ -271,7 +271,7 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
     </style>
 
     <audio id="bgMusic" loop preload="auto">
-      <source src="musik.mp3" type="audio/mpeg">
+      <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
     <div id="musicBtn" onclick="toggleMusic()" title="Play/Pause Music" style="
@@ -590,28 +590,34 @@ function startHearts() {
 </script>
 
 <script>
-  // Script untuk Audio & Tombol Musik
-  window.addEventListener('load', () => {
-    const music = document.getElementById('bgMusic');
-    const layarPembuka = document.getElementById('layar-pembuka');
-    music.volume = 0.5;
-    
-    // Fungsi ini jalan pas layar pembuka disentuh
-    const mulaiSemua = () => {
-      music.play().catch(e => console.log("Audio error:", e));
-      layarPembuka.style.opacity = '0';
-      setTimeout(() => { layarPembuka.style.display = 'none'; }, 1000);
-      layarPembuka.removeEventListener('click', mulaiSemua);
-      layarPembuka.removeEventListener('touchstart', mulaiSemua);
-    };
+  // KODE AUDIO INSTAN - Gak pake nunggu loading web beres!
+  const music = document.getElementById('bgMusic');
+  const layarPembuka = document.getElementById('layar-pembuka');
+  music.volume = 0.5;
 
-    layarPembuka.addEventListener('click', mulaiSemua);
-    layarPembuka.addEventListener('touchstart', mulaiSemua);
-  });
+  function gasLagu() {
+    // Paksa lagu nyala detik itu juga pas disentuh
+    music.play().then(() => {
+        console.log("Lagu nyala bro!");
+    }).catch(err => {
+        console.log("Waduh gagal:", err);
+    });
 
-  // Fungsi tambahan biar tombol musik pojok kanan berfungsi
+    // Hilangkan layar hitam dengan mulus
+    layarPembuka.style.opacity = '0';
+    setTimeout(() => { layarPembuka.style.display = 'none'; }, 1000);
+
+    // Hapus sensor biar HP gak lag
+    layarPembuka.removeEventListener('click', gasLagu);
+    layarPembuka.removeEventListener('touchstart', gasLagu);
+  }
+
+  // Pasang pelatuk langsung ke layar tanpa ampun
+  layarPembuka.addEventListener('click', gasLagu);
+  layarPembuka.addEventListener('touchstart', gasLagu);
+
+  // Script tombol on/off lagu di pojok kanan bawah
   function toggleMusic() {
-    const music = document.getElementById('bgMusic');
     if (music.paused) {
       music.play();
     } else {
