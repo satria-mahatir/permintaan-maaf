@@ -189,7 +189,7 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
 @keyframes burst-heart {0%{opacity:1;transform:translate(0,0) scale(0.2);} 60%{opacity:1;} 100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(1);}}
 
 /* ========================================= */
-/* EFEK TEKS MELAYANG JADI SATU KALIMAT      */
+/* EFEK TEKS MELAYANG & FIX RESPONSIVE IPHONE */
 /* ========================================= */
 .pesan-cinta {
     position: fixed;
@@ -209,19 +209,26 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
     font-weight: 800;
     color: azure;
     text-shadow: 0 0 10px #39c6d6, 0 0 20px #39c6d6;
-    transition: all 2s cubic-bezier(0.25, 1, 0.5, 1); /* Transisi smooth pas ngumpul */
+    transition: all 2s cubic-bezier(0.25, 1, 0.5, 1);
     opacity: 0;
 }
 
-/* FIX RESPONSIVE HP */
+/* KHUSUS IPHONE 13 (Viewport ~390x844) & Layar HP Umumnya */
 @media screen and (max-width: 600px) {
-    .flowers { transform: scale(0.65) translateY(10vh); transform-origin: bottom center; }
-    .heart-glow { transform: scale(0.6); }
+    .flowers {
+        transform: scale(0.85) translateY(0); /* Gedein biar gak kuntet, pas di dasar layar */
+        transform-origin: bottom center;
+    }
+    .heart-glow { transform: scale(0.7); }
     .word { font-size: 1.8rem; gap: 8px; }
-    .pesan-cinta { top: 12%; gap: 8px;}
+    .pesan-cinta { top: 12%; width: 95vw; }
 }
-@media screen and (max-height: 700px) {
-    .flowers { transform: scale(0.55) translateY(5vh); }
+@media screen and (max-height: 850px) and (max-width: 450px) {
+    /* Penyesuaian presisi tinggi untuk layar seukuran iPhone 13 */
+    .flowers {
+        transform: scale(0.8) translateY(2vh);
+        transform-origin: bottom center;
+    }
 }
 </style>
 </head>
@@ -229,7 +236,7 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
     
     <div id="layar-pembuka" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:'Poppins', sans-serif; cursor:pointer; transition: opacity 1s ease;">
         <span style="font-size: 2rem; margin-bottom: 15px; animation: pulse 1.5s infinite;">💌</span>
-        <span style="font-size: 1.2rem; text-align:center;">Sentuh layarnya pelan-pelan ya...</span>
+        <span style="font-size: 1.2rem; text-align:center;">di  pencet sayang....</span>
     </div>
     <style>
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
@@ -309,9 +316,6 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
     </div>
 
 <script>
-// ==========================================
-// SCRIPT MUNCULIN LOVE (TIDAK DISENTUH)
-// ==========================================
 const container = document.getElementById('heartsContainer');
 const emojiHearts = ['💕','💗','💖','💓','💝','❤️','🩷','💞','💘','💟','🫀','❣️','💌'];
 const cssColors = ['#ff3399','#ff69b4','#ff1493','#ff6eb4','#e91e8c','#ff85c2','#ff4da6','#c9006b','#ffadd9','#fa7eb5'];
@@ -395,30 +399,30 @@ function animateText() {
         span.className = 'word';
         span.innerText = word;
         
-        // Atur posisi awal ngacak (seolah melayang dari bawah/samping)
-        const startX = rand(-50, 50); // Titik sebar X (kiri-kanan)
-        const startY = rand(50, 80);  // Titik sebar Y (dari bawah)
-        const startRot = rand(-45, 45); // Rotasi miring ngacak
+        // Posisinya disebar dikit aja biar gak nabrak pinggiran iPhone
+        const startX = rand(-35, 35); 
+        const startY = rand(40, 70);  
+        const startRot = rand(-45, 45); 
         
         span.style.transform = `translate(${startX}vw, ${startY}vh) rotate(${startRot}deg) scale(0.5)`;
         textContainer.appendChild(span);
         spans.push(span);
 
-        // Munculin dari bawah satu-satu sambil naik pelan-pelan
+        // Muncul ngacak dari bawah
         setTimeout(() => {
             span.style.opacity = '1';
-            span.style.transform = `translate(${startX * 0.3}vw, ${startY - 40}vh) rotate(${startRot * 0.5}deg) scale(0.8)`;
-        }, 1000 + (index * 1000)); // Muncul bergantian tiap 1 detik
+            span.style.transform = `translate(${startX * 0.3}vw, ${startY - 30}vh) rotate(${startRot * 0.5}deg) scale(0.8)`;
+        }, 1000 + (index * 1000)); 
     });
 
-    // Pas detik ke-6 (pas bunga udah tumbuh full), gabungin jadi satu kalimat!
+    // Pas detik ke-6 nyatu jadi kalimat di tengah atas
     setTimeout(() => {
         spans.forEach((span, index) => {
             setTimeout(() => {
                 span.style.transform = 'translate(0, 0) rotate(0) scale(1)';
-                span.style.color = '#ffadd9'; // Warna berubah sedikit pas nyatu
+                span.style.color = '#ffadd9';
                 span.style.textShadow = '0 0 15px #ff69b4, 0 0 30px #ff69b4';
-            }, index * 200); // Ngumpulnya berurutan estetik
+            }, index * 200);
         });
     }, 6000); 
 }
@@ -443,7 +447,7 @@ function gasSemua() {
     startHearts(); // Love mulai bertebaran
     animateText(); // Teks mulai melayang
 
-    // 4. Copot sensor sentuh biar HP ga berat
+    // 4. Copot sensor sentuh biar HP ga lag
     layarPembuka.removeEventListener('click', gasSemua);
     layarPembuka.removeEventListener('touchstart', gasSemua);
 }
