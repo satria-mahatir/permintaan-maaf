@@ -183,7 +183,6 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
   overflow: hidden;
 }
 
-/* CSS heart shape */
 .heart {
   position: absolute;
   display: inline-block;
@@ -207,7 +206,6 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
   top: 0; left: 50%;
 }
 
-/* emoji hearts that also float */
 .heart-emoji {
   position: absolute;
   font-size: 1.5rem;
@@ -231,7 +229,6 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
   100% { opacity: 0; transform: translateY(-75vh) translateX(var(--drift)) scale(1.2) rotate(var(--rot-end)); }
 }
 
-/* Pulsing glow hearts fixed near flowers */
 .heart-glow {
   position: absolute;
   font-size: 2.5rem;
@@ -245,7 +242,6 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
   50%      { transform: scale(1.3) rotate(10deg); opacity: 1;   filter: drop-shadow(0 0 25px #ff3399) drop-shadow(0 0 50px #ff69b4); }
 }
 
-/* Sparkle hearts that burst */
 .heart-burst {
   position: absolute;
   animation: burst-heart ease-out forwards;
@@ -261,11 +257,11 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
 </style>
 </head>
 <body class="container">
-  <div id="layar-pembuka" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:'Poppins', sans-serif; cursor:pointer; transition: opacity 1s ease;">
+    
+    <div id="layar-pembuka" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; font-family:'Poppins', sans-serif; cursor:pointer; transition: opacity 1s ease;">
         <span style="font-size: 2rem; margin-bottom: 15px; animation: pulse 1.5s infinite;">💌</span>
         <span style="font-size: 1.2rem; text-align:center;">Sentuh layarnya pelan-pelan ya...</span>
     </div>
-    
     <style>
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -273,12 +269,11 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
             100% { transform: scale(1); }
         }
     </style>
-    <!-- Background Music -->
-    <audio id="bgMusic" loop preload="auto">
-    <source src="musik.mp3" type="audio/mpeg">
-</audio>
 
-    <!-- Music toggle button -->
+    <audio id="bgMusic" loop preload="auto">
+      <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="musicBtn" onclick="toggleMusic()" title="Play/Pause Music" style="
       position:fixed; bottom:20px; right:20px; z-index:9999;
       width:50px; height:50px; border-radius:50%;
@@ -295,12 +290,11 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
         50%      { box-shadow:0 0 25px #ff3399, 0 0 50px #ff69b4; transform:scale(1.1); }
       }
     </style>
+
     <div class="night"></div>
 
-    <!-- ♥ Floating hearts container (JS will populate) -->
     <div class="hearts-container" id="heartsContainer"></div>
 
-    <!-- Pulsing glow hearts near flowers -->
     <div class="heart-glow" style="bottom: 62vh; left: 47%; animation-delay: 0s;">💗</div>
     <div class="heart-glow" style="bottom: 70vh; left: 53%; animation-delay: 0.7s; font-size: 2rem;">💕</div>
     <div class="heart-glow" style="bottom: 55vh; left: 43%; animation-delay: 1.4s; font-size: 1.8rem;">💖</div>
@@ -506,33 +500,22 @@ body{display:flex;align-items:flex-end;justify-content:center;min-height:100vh;b
     </div>
 
 <script>
-// Remove container class to start animations
+// Script memunculkan love (ASLI GAK DISENTUH)
 onload = () => {
   document.body.classList.remove("container");
   startHearts();
 };
 
 const container = document.getElementById('heartsContainer');
-
-// Emoji hearts palette
 const emojiHearts = ['💕','💗','💖','💓','💝','❤️','🩷','💞','💘','💟','🫀','❣️','💌'];
+const cssColors = ['#ff3399','#ff69b4','#ff1493','#ff6eb4','#e91e8c','#ff85c2','#ff4da6','#c9006b','#ffadd9','#fa7eb5'];
 
-// CSS color hearts palette
-const cssColors = [
-  '#ff3399','#ff69b4','#ff1493','#ff6eb4','#e91e8c',
-  '#ff85c2','#ff4da6','#c9006b','#ffadd9','#fa7eb5'
-];
+function rand(min, max) { return Math.random() * (max - min) + min; }
 
-function rand(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-// Floating emoji hearts
 function spawnEmojiHeart() {
   const el = document.createElement('div');
   el.className = 'heart-emoji';
-  // Spawn from lower portion near flowers (center-ish)
-  const startX = rand(25, 75); // % from left
+  const startX = rand(25, 75);
   const duration = rand(3.5, 7);
   const size = rand(1, 2.8);
   const drift = rand(-150, 150);
@@ -541,21 +524,15 @@ function spawnEmojiHeart() {
   const delay = rand(0, 0.5);
 
   el.style.cssText = `
-    left:${startX}%;
-    bottom:${rand(10,40)}%;
-    font-size:${size}rem;
-    animation-duration:${duration}s;
-    animation-delay:${delay}s;
-    --drift:${drift}px;
-    --rot-start:${rotStart}deg;
-    --rot-end:${rotEnd}deg;
+    left:${startX}%; bottom:${rand(10,40)}%; font-size:${size}rem;
+    animation-duration:${duration}s; animation-delay:${delay}s;
+    --drift:${drift}px; --rot-start:${rotStart}deg; --rot-end:${rotEnd}deg;
   `;
   el.textContent = emojiHearts[Math.floor(Math.random() * emojiHearts.length)];
   container.appendChild(el);
   setTimeout(() => el.remove(), (duration + delay + 0.5) * 1000);
 }
 
-// CSS div hearts (classic red/pink)
 function spawnCSSHeart() {
   const el = document.createElement('div');
   el.className = 'heart';
@@ -569,23 +546,16 @@ function spawnCSSHeart() {
   const opacity = rand(0.5, 1);
 
   el.style.cssText = `
-    width:${size}px;
-    height:${size}px;
-    background:${color};
-    left:${startX}%;
-    bottom:${rand(5, 45)}%;
-    animation-duration:${duration}s;
-    animation-delay:${delay}s;
-    --drift:${drift}px;
-    --end-scale:${endScale};
-    filter: drop-shadow(0 0 ${size*0.4}px ${color});
-    opacity:${opacity};
+    width:${size}px; height:${size}px; background:${color};
+    left:${startX}%; bottom:${rand(5, 45)}%;
+    animation-duration:${duration}s; animation-delay:${delay}s;
+    --drift:${drift}px; --end-scale:${endScale};
+    filter: drop-shadow(0 0 ${size*0.4}px ${color}); opacity:${opacity};
   `;
   container.appendChild(el);
   setTimeout(() => el.remove(), (duration + delay + 0.5) * 1000);
 }
 
-// Burst hearts when flowers are centered
 function spawnBurst(centerX, centerY) {
   const count = 10;
   for (let i = 0; i < count; i++) {
@@ -597,12 +567,9 @@ function spawnBurst(centerX, centerY) {
     const by = -Math.abs(Math.sin(angle * Math.PI / 180) * dist) + 'px';
     el.textContent = emojiHearts[Math.floor(Math.random() * emojiHearts.length)];
     el.style.cssText = `
-      left:${centerX}px;
-      top:${centerY}px;
-      --bx:${bx};
-      --by:${by};
-      animation-duration:${rand(0.8,1.5)}s;
-      animation-delay:${rand(0,0.3)}s;
+      left:${centerX}px; top:${centerY}px;
+      --bx:${bx}; --by:${by};
+      animation-duration:${rand(0.8,1.5)}s; animation-delay:${rand(0,0.3)}s;
       font-size:${rand(1,2)}rem;
     `;
     container.appendChild(el);
@@ -610,17 +577,10 @@ function spawnBurst(centerX, centerY) {
   }
 }
 
-// Start spawning hearts continuously
 function startHearts() {
-  // Emoji hearts every 400ms
   setInterval(spawnEmojiHeart, 400);
-  // CSS hearts every 600ms
   setInterval(spawnCSSHeart, 600);
-  // Initial burst from center flower
-  setTimeout(() => {
-    spawnBurst(window.innerWidth * 0.5, window.innerHeight * 0.38);
-  }, 2000);
-  // Periodic bursts
+  setTimeout(() => { spawnBurst(window.innerWidth * 0.5, window.innerHeight * 0.38); }, 2000);
   setInterval(() => {
     const cx = window.innerWidth * rand(0.35, 0.65);
     const cy = window.innerHeight * rand(0.2, 0.5);
@@ -630,33 +590,34 @@ function startHearts() {
 </script>
 
 <script>
+  // Script untuk Audio & Tombol Musik
   window.addEventListener('load', () => {
     const music = document.getElementById('bgMusic');
     const layarPembuka = document.getElementById('layar-pembuka');
     music.volume = 0.5;
     
-    // Fungsi ini bakal jalan pas layar disentuh
+    // Fungsi ini jalan pas layar pembuka disentuh
     const mulaiSemua = () => {
-      // 1. Lagu langsung digas!
       music.play().catch(e => console.log("Audio error:", e));
-      
-      // 2. Layar pembuka pelan-pelan menghilang
       layarPembuka.style.opacity = '0';
-      
-      // 3. Setelah 1 detik (pas layarnya udah hilang), hapus dari sistem biar ga berat
-      setTimeout(() => {
-          layarPembuka.style.display = 'none';
-      }, 1000);
-
-      // Matiin sensor sentuh biar HP ga lag
+      setTimeout(() => { layarPembuka.style.display = 'none'; }, 1000);
       layarPembuka.removeEventListener('click', mulaiSemua);
       layarPembuka.removeEventListener('touchstart', mulaiSemua);
     };
 
-    // Nunggu cewek lu nyentuh layar pembukanya
     layarPembuka.addEventListener('click', mulaiSemua);
     layarPembuka.addEventListener('touchstart', mulaiSemua);
   });
+
+  // Fungsi tambahan biar tombol musik pojok kanan berfungsi
+  function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    if (music.paused) {
+      music.play();
+    } else {
+      music.pause();
+    }
+  }
 </script>
 </body>
 </html>
